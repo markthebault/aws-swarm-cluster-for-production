@@ -1,6 +1,7 @@
 # Swarm cluster for AWS
 Setup a swarm cluster production ready haven't been so easy !
 
+![Cloud visual description](https://github.com/markthebault/aws-swarm-cluster-for-production/blob/master/cloud-image.png)
 
 ## Boostraping a Swarm cluster in AWS
 This project uses CoreOS images on alpha version (to get the last updates from docker)
