@@ -14,8 +14,8 @@ resource "aws_instance" "bastion"{
 
   tags {
     Owner = "${var.owner}"
-    Name = "Bastion"
-    ansibleFilter = "${var.ansibleFilter}"
+    Name = "bastion"
+    ansibleFilter = "bastion"
     ansibleNodeType = "bastion"
     ansibleNodeName = "bastion"
   }
