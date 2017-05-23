@@ -2,14 +2,17 @@ variable control_cidr {
   description = "CIDR for maintenance: inbound traffic will be allowed from this IPs"
 }
 
-variable default_keypair_public_key {
-  description = "Public Key of the default keypair"
-}
-
 variable default_keypair_name {
   description = "Name of the KeyPair used for all nodes"
   default = "swarm-keypair"
 }
+
+variable default_keypair_path {
+  description = "Private Key to insert in all nodes"
+}
+
+
+
 
 
 variable vpc_name {
@@ -46,18 +49,35 @@ variable vpc_cidr {
   default = "10.43.0.0/16"
 }
 
-variable swarm_pod_cidr {
-  default = "10.200.0.0/16"
+variable public_subnet1_cidr {
+  default = "10.43.0.0/24"
+}
+
+variable private_subnet1_cidr {
+  default = "10.43.1.0/24"
 }
 
 
+
 # Instances Setup
-variable amis {
+variable amis_swarm {
   description = "Default AMIs to use for nodes depending on the region"
   type = "map"
   default = {
     eu-west-1 = "ami-0bcbcb6d"
   }
+}
+
+variable ami_bastion {
+  description = "Default AMI for Bastion"
+  type = "map"
+  default = {
+    eu-west-1 = "ami-0bcbcb6d"
+  }
+}
+
+variable bastion_instance_type {
+  default = "t2.micro"
 }
 
 variable default_instance_user {

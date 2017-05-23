@@ -5,16 +5,18 @@
 # Generate ../ssh.cfg
 data "template_file" "ssh_cfg" {
     template = "${file("${path.module}/template/ssh.cfg")}"
-    depends_on = ["aws_instance.master", "aws_instance.worker"]
+    depends_on = ["aws_instance.master", "aws_instance.worker", "aws_instance.bastion"]
     vars {
       user = "${var.default_instance_user}"
+      user_bastion = "${var.default_instance_user}"
 
-      master0_ip = "${aws_instance.master.0.public_ip}"
-      master1_ip = "${aws_instance.master.1.public_ip}"
-      master2_ip = "${aws_instance.master.2.public_ip}"
-      worker0_ip = "${aws_instance.worker.0.public_ip}"
-      worker1_ip = "${aws_instance.worker.1.public_ip}"
-      worker2_ip = "${aws_instance.worker.2.public_ip}"
+      bastion_ip = "${aws_instance.bastion.public_ip}"
+      master0_ip = "${aws_instance.master.0.private_ip}"
+      master1_ip = "${aws_instance.master.1.private_ip}"
+      master2_ip = "${aws_instance.master.2.private_ip}"
+      worker0_ip = "${aws_instance.worker.0.private_ip}"
+      worker1_ip = "${aws_instance.worker.1.private_ip}"
+      worker2_ip = "${aws_instance.worker.2.private_ip}"
     }
 }
 resource "null_resource" "ssh_cfg" {

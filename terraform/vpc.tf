@@ -32,10 +32,10 @@ resource "aws_vpc_dhcp_options_association" "dns_resolver" {
 # Keypair
 ##########
 
-resource "aws_key_pair" "default_keypair" {
-  key_name = "${var.default_keypair_name}"
-  public_key = "${var.default_keypair_public_key}"
-}
+# resource "aws_key_pair" "default_keypair" {
+#   key_name = "${var.default_keypair_name}"
+#   public_key = "${var.default_keypair_public_key}"
+# }
 
 
 ############
@@ -43,30 +43,59 @@ resource "aws_key_pair" "default_keypair" {
 ############
 
 # Subnet (public)
-resource "aws_subnet" "swarm" {
+resource "aws_subnet" "swarm_public" {
   vpc_id = "${aws_vpc.swarm.id}"
-  cidr_block = "${var.vpc_cidr}"
+  cidr_block = "${var.public_subnet1_cidr}"
   availability_zone = "${var.zone}"
 
   tags {
     Name = "swarm"
+    Type = "Public subnet"
     Owner = "${var.owner}"
   }
 }
 
+# Subnet (private)
+resource "aws_subnet" "swarm_private" {
+  vpc_id = "${aws_vpc.swarm.id}"
+  cidr_block = "${var.private_subnet1_cidr}"
+  availability_zone = "${var.zone}"
+
+  tags {
+    Name = "swarm"
+    Type = "Private subnet"
+    Owner = "${var.owner}"
+  }
+}
+
+
+
+
+#Internet Gateway
 resource "aws_internet_gateway" "gw" {
   vpc_id = "${aws_vpc.swarm.id}"
   tags {
-    Name = "swarm"
+    Name = "swarm IG"
     Owner = "${var.owner}"
   }
+}
+
+#Nat Gateway
+resource "aws_eip" "nat_eip" {
+  vpc = true
+}
+resource "aws_nat_gateway" "gw" {
+  subnet_id  = "${aws_subnet.swarm_public.id}"
+  allocation_id = "${aws_eip.nat_eip.id}"
+  depends_on = ["aws_internet_gateway.gw"]
 }
 
 ############
 ## Routing
 ############
 
-resource "aws_route_table" "swarm" {
+#Public subnet
+resource "aws_route_table" "swarm_public" {
     vpc_id = "${aws_vpc.swarm.id}"
 
     # Default route through Internet Gateway
@@ -81,62 +110,28 @@ resource "aws_route_table" "swarm" {
     }
 }
 
-resource "aws_route_table_association" "swarm" {
-  subnet_id = "${aws_subnet.swarm.id}"
-  route_table_id = "${aws_route_table.swarm.id}"
+resource "aws_route_table_association" "swarm_public" {
+  subnet_id = "${aws_subnet.swarm_public.id}"
+  route_table_id = "${aws_route_table.swarm_public.id}"
 }
 
+#Private subnet
+resource "aws_route_table" "swarm_private" {
+    vpc_id = "${aws_vpc.swarm.id}"
 
-############
-## Security
-############
+    # Default route through Internet Gateway
+    route {
+      cidr_block = "0.0.0.0/0"
+      gateway_id = "${aws_nat_gateway.gw.id}"
+    }
 
-resource "aws_security_group" "swarm" {
-  vpc_id = "${aws_vpc.swarm.id}"
-  name = "swarm"
+    tags {
+      Name = "swarm"
+      Owner = "${var.owner}"
+    }
+}
 
-  # Allow all outbound
-  egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Allow ICMP from control host IP
-  ingress {
-    from_port = 8
-    to_port = 0
-    protocol = "icmp"
-    cidr_blocks = ["${var.control_cidr}"]
-  }
-
-  # Allow all internal
-  ingress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["${var.vpc_cidr}"]
-  }
-
-  # Allow all traffic from the API ELB
-  ingress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    security_groups = ["${aws_security_group.swarm_api.id}"]
-  }
-
-  # Allow all traffic from control host IP
-  ingress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["${var.control_cidr}"]
-  }
-
-  tags {
-    Owner = "${var.owner}"
-    Name = "swarm"
-  }
+resource "aws_route_table_association" "swarm_private" {
+  subnet_id = "${aws_subnet.swarm_private.id}"
+  route_table_id = "${aws_route_table.swarm_private.id}"
 }
