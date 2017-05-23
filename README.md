@@ -1,6 +1,12 @@
 # Swarm cluster for AWS
 Setup a swarm cluster production ready haven't been so easy !
 
+This is a bootstrap project, which creates 6 swarm nodes, 3 managers and 3 workers.
+
+All Swarm nodes are in a single private subnet and they have access to internet via a Nat Gateway in the public subnet
+There is also a Bastion Host to configure and SSH the swarm nodes. A default Elastic Load Balancer is created also that listens the trafic on TCP:3000 of all swarm nodes and load balance TCP trafic comming from the internet on the port 80.
+
+**You can find a more detailled view as above:**
 ![Cloud visual description](https://github.com/markthebault/aws-swarm-cluster-for-production/blob/master/cloud-image.png)
 
 ## Boostraping a Swarm cluster in AWS
@@ -43,3 +49,4 @@ To change the load balancer configuration you can change the following file: `./
 ## Optimisations
 - Currently the project works only on one AZ so that's not very good for high availability
 - The project only support AWS
+- Add a OpenVPN in docker to the bastion host with systemd
