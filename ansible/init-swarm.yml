@@ -4,10 +4,19 @@
       docker_swarm_port: 2377
 
   tasks:
+    - name: Check if "Swarm Mode" is enabled.
+      shell: docker info
+      changed_when: False
+      register: docker_info
+      tags:
+        - init-swarm
+        - leader
+
     - name: Init "Swarm Mode" on the first manager.
       shell: docker swarm init
             --listen-addr {{ansible_eth0.ipv4.address}}:{{ docker_swarm_port }}
             --advertise-addr {{ansible_eth0.ipv4.address}}
+      when: "docker_info.stdout.find('Swarm: active') == -1"
       tags:
         - init-swarm
         - leader
@@ -39,7 +48,7 @@
 
     - name: Join swarm cluster [managers]
       shell: docker swarm join
-          --token {{hostvars.master0.token_manager.stdout_lines.0}}
+          --token {{hostvars.master0.token_manager.stdout}}
           --advertise-addr {{ansible_eth0.ipv4.address}}
           {{hostvars.master0.ansible_eth0.ipv4.address}}
       when: "docker_info.stdout.find('Swarm: active') == -1" #Run this command on none node swarm
@@ -60,7 +69,7 @@
 
     - name: Join swarm cluster [workers]
       shell: docker swarm join
-          --token {{hostvars.master0.token_worker.stdout_lines.0}}
+          --token {{hostvars.master0.token_worker.stdout}}
           --advertise-addr {{ansible_eth0.ipv4.address}}
           {{hostvars.master0.ansible_eth0.ipv4.address}}
       when: "docker_info.stdout.find('Swarm: active') == -1" #Run this command on none node swarm

@@ -12,3 +12,6 @@ tag_ansibleNodeType_master
 
 [all:vars]
 ansible_python_interpreter="PATH=/home/core/bin:$PATH python"
+
+[bastion]
+bastion

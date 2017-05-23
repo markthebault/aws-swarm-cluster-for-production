@@ -39,7 +39,7 @@ resource "aws_security_group" "swarm_worker" {
     from_port = 1000
     to_port = 65000
     protocol = "TCP"
-    cidr_blocks = ["${var.public_subnet1_cidr}"]
+    cidr_blocks = ["${var.vpc_cidr}"]
   }
 
   ingress {
@@ -47,6 +47,20 @@ resource "aws_security_group" "swarm_worker" {
     to_port = 22
     protocol = "TCP"
     cidr_blocks = ["${var.public_subnet1_cidr}"]
+  }
+
+  ingress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["${var.private_subnet1_cidr}"]
+  }
+
+  ingress {
+    from_port = -1
+    to_port = -1
+    protocol = "icmp"
+    cidr_blocks = ["${var.vpc_cidr}"]
   }
 
   # Allow all outbound traffic

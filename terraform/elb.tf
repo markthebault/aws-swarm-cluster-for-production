@@ -4,7 +4,7 @@
 
 resource "aws_elb" "swarm_elb" {
     name = "${var.elb_name}"
-    instances = ["${aws_instance.master.*.id}"]
+    instances = ["${aws_instance.master.*.id}","${aws_instance.worker.*.id}"]
     subnets = ["${aws_subnet.swarm_public.id}"]
     cross_zone_load_balancing = false
 
@@ -12,7 +12,7 @@ resource "aws_elb" "swarm_elb" {
 
     #Simple UI Docker
     listener {
-      lb_port = 3000
+      lb_port = 80
       instance_port = 3000
       lb_protocol = "TCP"
       instance_protocol = "TCP"
@@ -42,8 +42,8 @@ resource "aws_security_group" "swarm_elb" {
 
   #Simple UI Docker
   ingress {
-    from_port = 3000
-    to_port = 3000
+    from_port = 80
+    to_port = 80
     protocol = "TCP"
     cidr_blocks = ["${var.control_cidr}"]
   }

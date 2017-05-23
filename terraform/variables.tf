@@ -64,7 +64,7 @@ variable amis_swarm {
   description = "Default AMIs to use for nodes depending on the region"
   type = "map"
   default = {
-    eu-west-1 = "ami-0bcbcb6d"
+    eu-west-1 = "ami-0c3a346a"
   }
 }
 
@@ -72,7 +72,7 @@ variable ami_bastion {
   description = "Default AMI for Bastion"
   type = "map"
   default = {
-    eu-west-1 = "ami-0bcbcb6d"
+    eu-west-1 = "ami-0c3a346a"
   }
 }
 
