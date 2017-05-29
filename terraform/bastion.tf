@@ -37,6 +37,14 @@ resource "aws_security_group" "bastion" {
     cidr_blocks = ["${var.control_cidr}"]
   }
 
+  # Allow openvpn traffic on UDP port 1194
+  ingress {
+    from_port = 1194
+    to_port = 1194
+    protocol = "UDP"
+    cidr_blocks = ["${var.control_cidr}"]
+  }
+
   # Allow all outbound traffic
   egress {
     from_port = 0

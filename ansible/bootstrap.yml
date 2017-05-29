@@ -1,7 +1,6 @@
 ---
 - hosts:
-    - master
-    - worker
+    - all
   gather_facts: false # As Python is not yet installed, we cannot gather host facts
   roles:
     - defunctzombie.coreos-bootstrap

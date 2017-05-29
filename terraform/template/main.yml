@@ -1,0 +1,3 @@
+---
+bastion_ip: ${bastion_ip}
+swarm_cluster_cidr: ${private_subnet_cidr}
