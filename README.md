@@ -47,8 +47,21 @@ Be aware of the loadbalancer is only configured to load balance trafic incoming 
 
 To change the load balancer configuration you can change the following file: `./terraform/elb.tf` don't forget to change the attached security group
 
+### 4/ Connect with OpenVPN
+You can connect to your cluster swarm direclty with openvpn and access to your services that you have deployed on your swarm cluster
+First you need to **add openvpn service to bastion**.
+
+OpenVPN is based on this [github](https://github.com/kylemanna/docker-openvpn).
+
+Run the ansible playbook `cd ansible && ansible-playbook bastion.yml`
+
+this will automaticaly create a file in `/tmp/CLIENTADMIN.conf` with the configuration of the OpenVPN.
+
+If it fails, you can run manualy the following scripts `./scripts/get-admin-vpn-cert.sh > myconf.conf`.
+
+To create more configuration for your users you can run the script `./scripts/create-client-vpnconf.sh client-name file-name.conf`
+
 
 ## Optimisations
 - Currently the project works only on one AZ so that's not very good for high availability
 - The project only support AWS
-- Add a OpenVPN in docker to the bastion host with systemd
