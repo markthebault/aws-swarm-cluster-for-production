@@ -76,9 +76,7 @@ variable ami_bastion {
   }
 }
 
-variable bastion_instance_type {
-  default = "t2.micro"
-}
+
 
 variable default_instance_user {
   default = "core"
@@ -88,6 +86,20 @@ variable master_instance_type {
 }
 variable worker_instance_type {
   default = "t2.micro"
+}
+
+variable bastion_instance_type {
+  default = "t2.micro"
+}
+
+variable nb_swarm_master{
+  description = "Choose the number of swarm master that you want, this have to be an odd number 1,3,5,7"
+  default = 3
+}
+
+variable nb_swarm_workers{
+  description = "Choose the number of swarm workers that you want"
+  default = 3
 }
 
 

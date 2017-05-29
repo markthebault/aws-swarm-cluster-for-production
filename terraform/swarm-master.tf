@@ -4,7 +4,7 @@
 
 resource "aws_instance" "master" {
 
-    count = 3
+    count = "${var.nb_swarm_master}"
     ami = "${lookup(var.amis_swarm, var.region)}"
     instance_type = "${var.master_instance_type}"
 

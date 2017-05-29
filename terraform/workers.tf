@@ -4,7 +4,7 @@
 ############################################
 
 resource "aws_instance" "worker" {
-    count = 3
+    count = "${var.nb_swarm_workers}"
     ami = "${lookup(var.amis_swarm, var.region)}"
     instance_type = "${var.worker_instance_type}"
 
