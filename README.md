@@ -15,6 +15,12 @@ A default Elastic Load Balancer is created also that listens the trafic on **TCP
 This project uses CoreOS images on alpha version (to get the last updates from docker)
 
 ### 1/ Provisionning of the infrastructure
+Make sure you environment contains the following variables:
+```
+export AWS_ACCESS_KEY_ID=<your access key>
+export AWS_SECRET_ACCESS_KEY=<your secrect key>
+```
+
 Create a file terraform.tfvars in `./terraform`
 
 **Example:**
@@ -26,6 +32,11 @@ default_keypair_path = "~/.ssh/swarm-clstr-kp.pem"
 ```
 
 Execute `terraform plan` to see what will be created and `terraform apply` to start terraforming ;)
+
+#### Quick start
+To start even faster just run the make file `make up`, this will create the infrastructure and provisionning the VMs.
+To destroy everything just run `make down`.
+
 
 ### 2/ Init the Swarm cluster
 All operations are executed by ansible so make sure that you have you private-key in your ssh agent
