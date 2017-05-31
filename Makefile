@@ -1,8 +1,18 @@
+BASEDIR=$(shell pwd)
+TERRAFORM_VARS ?= ${BASEDIR}/terraform.tfvars
+TERRAFORM_STATE ?= ${BASEDIR}/terraform.tfstate
+TERRAFORM_STATE_BACKUP ?= ${BASEDIR}/terraform.tfstate.backup
+
 up: infrastructure sleep provisionning ui-service
 
+plan:
+	cd terraform && terraform plan -var-file=${TERRAFORM_VARS} -state=${TERRAFORM_STATE}
 
 infrastructure:
-	cd terraform && terraform apply
+	cd terraform && \
+		terraform apply -var-file=${TERRAFORM_VARS} \
+			-state=${TERRAFORM_STATE} \
+			-backup=${TERRAFORM_STATE_BACKUP}
 
 sleep:
 	sleep 60
@@ -17,4 +27,7 @@ ui-service:
 
 
 down:
-	cd terraform && terraform destroy
+	cd terraform && \
+		terraform destroy -var-file=${TERRAFORM_VARS} \
+			-state=${TERRAFORM_STATE} \
+			-backup=${TERRAFORM_STATE_BACKUP}
