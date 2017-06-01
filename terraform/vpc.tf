@@ -49,7 +49,7 @@ resource "aws_subnet" "swarm_public" {
   availability_zone = "${var.zone}"
 
   tags {
-    Name = "swarm"
+    Name = "swarm-public-subnet"
     Type = "Public subnet"
     Owner = "${var.owner}"
   }
@@ -62,7 +62,7 @@ resource "aws_subnet" "swarm_private" {
   availability_zone = "${var.zone}"
 
   tags {
-    Name = "swarm"
+    Name = "swarm-private-subnet"
     Type = "Private subnet"
     Owner = "${var.owner}"
   }
@@ -75,7 +75,7 @@ resource "aws_subnet" "swarm_private" {
 resource "aws_internet_gateway" "gw" {
   vpc_id = "${aws_vpc.swarm.id}"
   tags {
-    Name = "swarm IG"
+    Name = "swarm-igw"
     Owner = "${var.owner}"
   }
 }
@@ -105,7 +105,7 @@ resource "aws_route_table" "swarm_public" {
     }
 
     tags {
-      Name = "swarm"
+      Name = "swarm-public-route"
       Owner = "${var.owner}"
     }
 }
@@ -126,7 +126,7 @@ resource "aws_route_table" "swarm_private" {
     }
 
     tags {
-      Name = "swarm"
+      Name = "swarm-private-route"
       Owner = "${var.owner}"
     }
 }
