@@ -72,6 +72,11 @@ If it fails, you can run manualy the following scripts `./scripts/get-admin-vpn-
 
 To create more configuration for your users you can run the script `./scripts/create-client-vpnconf.sh client-name file-name.conf`
 
+#### 5/ Monitoring
+The basic Monitoring have been done using [this stack](https://grafana.com/dashboards/609).
+To run the Monitoring, execute `cd ./ansible && ansible-playbook docker-monitoring.yml`
+You can also find an example of grafana dashboards in `./monitoring/grafana-dashboard/docker-swarm-container-overview.json`
+Grafana is accessible on the port `http://SWARM_NODE:3000` (you need to connect with the vpn in order to access to this service).
 
 ## Optimisations
 - Currently the project works only on one AZ so that's not very good for high availability
