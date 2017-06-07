@@ -1,0 +1,30 @@
+---
+- hosts: master0 #the leader
+  become: true
+  vars_files:
+    - defaults/main.yml
+  tasks:
+    - name: Create Swarm directory
+      file: path=/etc/swarm state=directory
+      tags:
+        - monitoring
+        
+    - name: Copy Monitoring stack
+      copy:
+        src: ./stacks/monitoring.yml
+        dest: /etc/swarm
+        mode: 0666
+      tags:
+        - monitoring
+
+    - name: Get monitoring stack
+      shell: docker stack ls
+      register: stacks
+      tags:
+        - monitoring
+
+    - name: Deploy monitoring stack
+      command: docker stack deploy --compose-file /etc/swarm/monitoring.yml monitoring
+      when: "stacks.stdout.find('monitoring') == -1"
+      tags:
+        - monitoring
