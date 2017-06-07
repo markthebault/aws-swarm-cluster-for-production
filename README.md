@@ -73,6 +73,7 @@ If it fails, you can run manualy the following scripts `./scripts/get-admin-vpn-
 To create more configuration for your users you can run the script `./scripts/create-client-vpnconf.sh client-name file-name.conf`
 
 #### 5/ Monitoring
+**This is experimental monitoring**
 The basic Monitoring have been done using [this stack](https://grafana.com/dashboards/609).
 To run the Monitoring, execute `cd ./ansible && ansible-playbook docker-monitoring.yml`
 You can also find an example of grafana dashboards in `./monitoring/grafana-dashboard/docker-swarm-container-overview.json`
