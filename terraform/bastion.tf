@@ -29,6 +29,22 @@ resource "aws_security_group" "bastion" {
   vpc_id = "${aws_vpc.swarm.id}"
   name = "bastion-sg"
 
+  # Allow vpc ICMP
+  ingress {
+    from_port = -1
+    to_port = -1
+    protocol = "ICMP"
+    cidr_blocks = ["${var.vpc_cidr}"]
+  }
+
+  # Allow privatesubnet inside trafic
+  ingress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["${var.private_subnet1_cidr}"]
+  }
+
   # Allow inbound SSH traffic
   ingress {
     from_port = 22

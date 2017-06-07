@@ -9,6 +9,8 @@ data "template_file" "ansible_vars" {
     vars {
       bastion_ip = "${aws_instance.bastion.public_ip}"
       private_subnet_cidr = "${var.private_subnet1_cidr}"
+      cloudwatch_ui_logs_group_name = "${var.cloudwatch_ui_logs_group_name}"
+      aws_region = "${var.region}"
     }
 }
 resource "null_resource" "ansible_vars" {

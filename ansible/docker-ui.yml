@@ -2,6 +2,8 @@
 - hosts: master0 #the leader
   vars:
     service_name: docker-ui
+  vars_files:
+    - defaults/main.yml
   tasks:
     - name: Get services
       shell: docker service ls
@@ -15,6 +17,13 @@
           --publish 3000:9000
           --constraint 'node.role == manager'
           --mount type=bind,src=//var/run/docker.sock,dst=/var/run/docker.sock
+          --restart-condition=any
+          --restart-max-attempts 20
+          --restart-delay 10s
+          --log-driver=awslogs
+          --log-opt awslogs-region={{aws_region}}
+          --log-opt awslogs-group={{cloudwatch_ui_logs_group_name}}
+          --label swarm.admin
           portainer/portainer -H unix:///var/run/docker.sock
       when: "services.stdout.find('{{service_name}}') == -1"
       tags:

@@ -29,8 +29,8 @@ variable owner {
   default = "swarm"
 }
 
-variable cloudwatch_logs_group_name {
-  default = "swarm-cluster-logs"
+variable cloudwatch_ui_logs_group_name {
+  default = "swarm-cluster-ui-logs"
 }
 
 variable ansibleFilter {
