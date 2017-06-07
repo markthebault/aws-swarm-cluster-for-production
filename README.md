@@ -74,7 +74,8 @@ To create more configuration for your users you can run the script `./scripts/cr
 
 ### 5/ Monitoring
 **This is experimental monitoring**
-The basic Monitoring have been done using [this stack](https://grafana.com/dashboards/609).
+
+The Monitoring stack have been done using [this stack](https://grafana.com/dashboards/609).
 To run the Monitoring, execute `cd ./ansible && ansible-playbook docker-monitoring.yml`
 You can also find an example of grafana dashboards in `./monitoring/grafana-dashboard/docker-swarm-container-overview.json`
 Grafana is accessible on the port `http://SWARM_NODE:3000` (you need to connect with the vpn in order to access to this service).
