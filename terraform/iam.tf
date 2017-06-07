@@ -49,12 +49,19 @@ resource "aws_iam_role_policy" "swarm" {
       "Action": "ecr:*",
       "Effect": "Allow",
       "Resource": "*"
+    },
+    {
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
     }
   ]
 }
 EOF
 }
-
 
 # IAM Instance Profile for Controller
 resource  "aws_iam_instance_profile" "swarm" {

@@ -8,6 +8,7 @@ resource "aws_instance" "worker" {
     ami = "${lookup(var.amis_swarm, var.region)}"
     instance_type = "${var.worker_instance_type}"
 
+    iam_instance_profile = "${aws_iam_instance_profile.swarm.id}"
     subnet_id = "${aws_subnet.swarm_private.id}"
     private_ip = "${cidrhost(var.private_subnet1_cidr, 30 + count.index)}"
     associate_public_ip_address = false

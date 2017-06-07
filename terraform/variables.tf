@@ -29,6 +29,10 @@ variable owner {
   default = "swarm"
 }
 
+variable cloudwatch_logs_group_name {
+  default = "swarm-cluster-logs"
+}
+
 variable ansibleFilter {
   description = "`ansibleFilter` tag value added to all instances, to enable instance filtering in Ansible dynamic inventory"
   default = "swarm01" # IF YOU CHANGE THIS YOU HAVE TO CHANGE instance_filters = tag:ansibleFilter=swarm01 in ./ansible/hosts/ec2.ini
@@ -64,7 +68,7 @@ variable amis_swarm {
   description = "Default AMIs to use for nodes depending on the region"
   type = "map"
   default = {
-    eu-west-1 = "ami-0c3a346a"
+    eu-west-1 = "ami-33776655"
   }
 }
 
@@ -72,7 +76,7 @@ variable ami_bastion {
   description = "Default AMI for Bastion"
   type = "map"
   default = {
-    eu-west-1 = "ami-0c3a346a"
+    eu-west-1 = "ami-33776655"
   }
 }
 
