@@ -13,7 +13,7 @@ resource "aws_elb" "swarm_elb" {
     #Simple UI Docker
     listener {
       lb_port = 80
-      instance_port = 3000
+      instance_port = 3543
       lb_protocol = "TCP"
       instance_protocol = "TCP"
     }
