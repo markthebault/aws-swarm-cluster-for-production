@@ -3,3 +3,4 @@ ca-key.pem
 ca.csr
 clients/*
 server/*
+swarm-csr.json

@@ -1,0 +1,83 @@
+---
+- hosts:
+  - master
+  - worker
+  become: true
+  tasks:
+    - name: Copy certificates
+      copy:
+        src: ../certificates/{{item}}
+        dest: /etc/docker
+        owner: root
+        group: root
+        mode: 0600
+      with_items:
+        - ca.pem
+        - ./server/server-key.pem
+        - ./server/server.pem
+      tags:
+        - docker
+        - certificates
+        - copy
+
+
+
+    - name: Create docker.service.d directory
+      file: path=/etc/systemd/system/docker.service.d/ state=directory
+      tags:
+        - docker
+        - dockerd-conf
+        - deamon
+
+    - name: Copy Docker deamon config
+      copy:
+        src: ./services/{{item}}
+        dest: /etc/systemd/system/docker.service.d/
+      with_items:
+        - 10-tls-verify.conf
+      tags:
+        - docker
+        - dockerd-conf
+        - deamon
+
+    - name: Copy Docker tcp services
+      copy:
+        src: ./services/{{item}}
+        dest: /etc/systemd/system/
+      with_items:
+        - docker-tls-tcp.socket
+      tags:
+        - docker
+        - create-socket
+
+
+    - name: Enable socket
+      command: systemctl enable docker-tls-tcp.socket
+      tags:
+        - docker
+        - service
+
+    - name: Stop docker
+      command: systemctl stop docker
+      tags:
+        - docker
+        - service
+
+    - name: Reset docker deamon
+      command: systemctl daemon-reload
+      tags:
+        - docker
+        - service
+        - deamon
+
+    - name: Start docker socket
+      command: systemctl start docker-tls-tcp.socket
+      tags:
+        - docker
+        - service
+
+    - name: start docker
+      command: systemctl start docker
+      tags:
+        - docker
+        - service

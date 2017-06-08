@@ -14,8 +14,7 @@ gen-ca:
 
 gen-server:
 	mkdir -p ./server
-	echo '{"CN":"swarm","hosts":[""],"key":{"algo":"rsa","size":2048}}' > ./server/server-csr.json
-	${CFSSL} gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=swarm ./server/server-csr.json | \
+	${CFSSL} gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=swarm swarm-csr.json | \
 	${CFSSLJSON} -bare ./server/server
 
 gen-client-certs:

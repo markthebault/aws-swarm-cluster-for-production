@@ -1,0 +1,35 @@
+{
+  "CN": "swarm",
+  "hosts": [
+    "worker0",
+    "worker1",
+    "worker2",
+    "master0",
+    "master1",
+    "master2",
+    "${worker0-ip}",
+    "${worker1-ip}",
+    "${worker2-ip}",
+    "${master0-ip}",
+    "${master1-ip}",
+    "${master2-ip}",
+    "${worker0-dns}",
+    "${worker1-dns}",
+    "${worker2-dns}",
+    "${master0-dns}",
+    "${master1-dns}",
+    "${master2-dns}",
+    "127.0.0.1"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "FR",
+      "L": "Paris",
+      "O": "Mark"
+    }
+  ]
+}
