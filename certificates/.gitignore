@@ -1,0 +1,5 @@
+ca.pem
+ca-key.pem
+ca.csr
+clients/*
+server/*

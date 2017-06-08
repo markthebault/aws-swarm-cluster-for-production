@@ -1,0 +1,21 @@
+{
+  "signing": {
+    "default": {
+      "expiry": "35040h"
+    },
+    "profiles": {
+      "swarm": {
+        "usages": ["signing", "key encipherment", "server auth"],
+        "expiry": "35040h"
+      },
+      "client": {
+      "expiry": "43800h",
+      "usages": [
+          "signing",
+          "key encipherment",
+          "client auth"
+        ]
+      }
+    }
+  }
+}
