@@ -80,6 +80,30 @@ To run the Monitoring, execute `cd ./ansible && ansible-playbook docker-monitori
 You can also find an example of grafana dashboards in `./monitoring/grafana-dashboard/docker-swarm-container-overview.json`
 Grafana is accessible on the port `http://SWARM_NODE:3000` (you need to connect with the vpn in order to access to this service).
 
+## Optional
+### Docker API Accessible via TLS
+You can also configure the docker deamon to be accessible via a distant CLI using TLS.
+
+To enable that feature follow the difrent steps:
+```
+# After terraform have been applied
+$ cd ./certificate
+
+# Create the CA certificate and the server cretificates
+$ make
+
+# Create the client certificate
+$ make gen-client-certs CLIENT=client
+
+# Execute the assible playbook to enable TLS
+$ cd ../ansible/
+$ ansible-playbook docker-certificates.yml
+
+# All nodes of you swarm are accessible via TLS like this:
+$ export IP_OF_ONE_NODE=10.43.1.20
+$ docker -H tcp://IP_OF_ONE_NODE:2376 --tlsverify  --tlscacert ../certificates/ca.pem --tlscert ../certificates/clients/client.pem --tlskey ../certificates/clients/client-key.pem info
+```
+
 ## Optimisations
 - Currently the project works only on one AZ so that's not very good for high availability
 - The project only support AWS
