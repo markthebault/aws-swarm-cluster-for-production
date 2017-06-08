@@ -22,7 +22,7 @@ resource "aws_elb" "swarm_elb" {
       healthy_threshold = 2
       unhealthy_threshold = 2
       timeout = 15
-      target = "HTTP:3000/"
+      target = "HTTP:3543/"
       interval = 30
     }
 
