@@ -6,7 +6,7 @@ This is a bootstrap project, which creates 6 swarm nodes, 3 managers and 3 worke
 All Swarm nodes are in a single private subnet and they have access to internet via a Nat Gateway in the public subnet.
 
 There is also a Bastion Host to configure and SSH the swarm nodes.
-A default Elastic Load Balancer is created also that listens the trafic on **TCP:3000** of all swarm nodes and load balance TCP trafic comming from the internet on the **port 80**.
+A default Elastic Load Balancer is created also that listens the trafic on **TCP:3543** of all swarm nodes and load balance TCP trafic comming from the internet on the **port 80**.
 
 **You can find a more detailled view as above:**
 ![Cloud visual description](https://github.com/markthebault/aws-swarm-cluster-for-production/blob/master/cloud-image.png)
@@ -54,7 +54,7 @@ Start if you want [portainer](http://portainer.io/) (a web ui for docker)
 ### 3/ Run new services
 To start a new services is very easy, you can follow [docker's tutorials](https://docs.docker.com/engine/reference/commandline/service_create/)
 
-Be aware of the loadbalancer is only configured to load balance trafic incoming from TCP:80 to go on TCP:3000 of the swarm instances
+Be aware of the loadbalancer is only configured to load balance trafic incoming from TCP:80 to go on TCP:3543 of the swarm instances
 
 To change the load balancer configuration you can change the following file: `./terraform/elb.tf` don't forget to change the attached security group
 
@@ -78,7 +78,7 @@ To create more configuration for your users you can run the script `./scripts/cr
 The Monitoring stack have been done using [this stack](https://grafana.com/dashboards/609).
 To run the Monitoring, execute `cd ./ansible && ansible-playbook docker-monitoring.yml`
 You can also find an example of grafana dashboards in `./monitoring/grafana-dashboard/docker-swarm-container-overview.json`
-Grafana is accessible on the port `http://SWARM_NODE:3000` (you need to connect with the vpn in order to access to this service).
+Grafana is accessible on the port `http://SWARM_NODE:3543` (you need to connect with the vpn in order to access to this service).
 
 ## Optional
 ### Docker API Accessible via TLS
